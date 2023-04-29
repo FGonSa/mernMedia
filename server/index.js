@@ -30,7 +30,7 @@ const app = express();
 
 /*
 ==============
-MIDDLEWARES
+MIDDLEWARES EXPRESS: Preparando las solicitudes HTTP
 ==============
 */
 
@@ -61,6 +61,66 @@ app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /*
 ==============
-FILE STORAGE
+FILE STORAGE: Subir y bajar ficheros
 ==============
 */
+
+//Objeto Storage
+//La función destination especifica el directorio donde se almacenarán los archivos subidos, en este caso, la carpeta "public/assets"
+//La función filename especifica el nombre del archivo cuando se guarda y se utiliza el nombre original del archivo subido.
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "public/assets");
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  });
+
+  //Definimos objeto Upload con la función multer y le pasamos Storage como parámetro
+  //el middleware utiliza el objeto storage para guardar el archivo en el directorio especificado y con el nombre especificado
+  const upload = multer({ storage });
+
+ /*
+==============
+MONGOOSE SETUP
+==============
+*/
+
+//Conexión con el Puerto que hay en ENV o en su defecto 6001
+const PORT = process.env.PORT || 6001;
+
+//Conexión MONGO DB
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+
+    /* ADD DATA ONE TIME */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
+
+    /*
+==============
+RUTAS
+==============
+*/
+
+//maneja una solicitud de registro de usuario y espera recibir un archivo con el nombre picture en la solicitud. 
+//El middleware upload.single() se utiliza para manejar la carga de un solo archivo con el nombre especificado. 
+//Después de que el archivo se carga con éxito, se llama a la función register() para procesar la solicitud.
+app.post("/auth/register", upload.single("picture"), register);
+
+//maneja una solicitud para crear un nuevo post y espera recibir un archivo con el nombre picture en la solicitud, junto con un token de autenticación.
+//Después de que el archivo se carga con éxito y se verifica el token, se llama a la función createPost() para procesar la solicitud.
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
+
+
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
