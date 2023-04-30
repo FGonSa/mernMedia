@@ -8,6 +8,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import {register} from '../controllers/auth.js'
+import authRoutes from './routes/auth.js'
+import userRoutes from './routes/users.js'
 
 /* CONFIGURATIONS */
 /*
@@ -118,6 +121,7 @@ app.post("/auth/register", upload.single("picture"), register);
 
 //maneja una solicitud para crear un nuevo post y espera recibir un archivo con el nombre picture en la solicitud, junto con un token de autenticación.
 //Después de que el archivo se carga con éxito y se verifica el token, se llama a la función createPost() para procesar la solicitud.
+//El next() que hay dentro de Token permite pasar al Upload posterior
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 
