@@ -9,8 +9,14 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import {register} from '../controllers/auth.js'
+import {createPost} from '../controllers/posts.js'
+import { verifyToken } from "./middleware/auth.js";
 import authRoutes from './routes/auth.js'
 import userRoutes from './routes/users.js'
+import postRoutes from './routes/posts.js'
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+import {users, posts} from './data/mock.js'
 
 /* CONFIGURATIONS */
 /*
@@ -84,31 +90,7 @@ const storage = multer.diskStorage({
   //el middleware utiliza el objeto storage para guardar el archivo en el directorio especificado y con el nombre especificado
   const upload = multer({ storage });
 
- /*
-==============
-MONGOOSE SETUP
-==============
-*/
-
-//Conexión con el Puerto que hay en ENV o en su defecto 6001
-const PORT = process.env.PORT || 6001;
-
-//Conexión MONGO DB
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-
-    /* ADD DATA ONE TIME */
-    // User.insertMany(users);
-    // Post.insertMany(posts);
-  })
-  .catch((error) => console.log(`${error} did not connect`));
-
-    /*
+      /*
 ==============
 RUTAS
 ==============
@@ -128,3 +110,32 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+
+ /*
+==============
+MONGOOSE SETUP
+==============
+*/
+
+//Conexión con el Puerto que hay en ENV o en su defecto 6001
+const PORT = process.env.PORT || 6001;
+
+//Conexión MONGO DB
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+
+    /* INSERTAR MOCK DATA de la carpeta DATA 
+      Esto sólo se hace la primera vez que usamos la APP.
+      Después es necesario comentar estas líneas de código.
+      Insertamos datos de prueba en MongoDB.
+    */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
+
