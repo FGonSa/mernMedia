@@ -9,5 +9,5 @@ De este modo, el rendimiento es mejor ya que ignora la carpeta Server.
     "compilerOptions": {
       "baseUrl": "src"
     },
-    "include": ["src"]
+    "include": ["src", "src/index.js"]
   }
