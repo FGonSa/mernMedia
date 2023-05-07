@@ -26,11 +26,11 @@ import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 
 const Navbar = () => {
-  const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const dispatch = useDispatch();
+  const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false); //State Menu Movil
+  const dispatch = useDispatch(); //Función para disparar acciones
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const user = useSelector((state) => state.user); //coge al User del state de Redux
+  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");//Hook de MUI
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -39,7 +39,7 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
-  const fullName = `${user.firstName} ${user.lastName}`;
+  const fullName = `${user.firstName} ${user.lastName}`; //Nombre completo del user
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -56,7 +56,7 @@ const Navbar = () => {
             },
           }}
         >
-          Sociopedia
+          MERNBook
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
