@@ -25,7 +25,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to MERNBook, the Social Media maded with MERN Stack
+          Welcome to MERNBook, the Social Media made with MERN Stack
         </Typography>
         <Form />
       </Box>
