@@ -1,13 +1,8 @@
-/*
-Este fichero sirve para indicar que cuando importamos ficheros
-en otros archivos desde el FrontEnd, la raíz sea SRC.
 
-De este modo, el rendimiento es mejor ya que ignora la carpeta Server.
-*/
 
 {
-    "compilerOptions": {
-      "baseUrl": "src"
-    },
-    "include": ["src", "src/index.js"]
-  }
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": ["src"]
+}
